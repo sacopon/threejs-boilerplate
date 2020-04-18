@@ -23,6 +23,12 @@ async function mainProgram() {
     setDisableTouchEvent(renderer.domElement);
     document.body.appendChild(renderer.domElement);
 
+    // touch event activate
+    renderer.domElement.addEventListener("touchstart", (e) => material.color .set("#00FF00"));
+    renderer.domElement.addEventListener("touchmove", (e) => material.color .set("#00FF00"));
+    renderer.domElement.addEventListener("touchend", (e) => material.color .set("#FF0000"));
+    renderer.domElement.addEventListener("touchcancel", (e) => material.color .set("#FF0000"));
+
     // scene
     scene = new Scene();
 
