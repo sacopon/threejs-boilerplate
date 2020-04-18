@@ -63,7 +63,7 @@ async function mainProgram() {
   };
 
   setupDomElements();
-  setupThree();
+  await setupThree();
   mainLoop();
 };
 
