@@ -9,24 +9,24 @@ import {
   MeshPhongMaterial,
 } from "three";
 
-const mainProgram = () => {
+async function mainProgram() {
   let renderer: WebGLRenderer;
   let scene: Scene;
   let camera: Camera;
   let mesh: Mesh;
 
   // setup
-  const setup = () => {
+  const setup = (width: number, height: number) => {
     // renderer
     renderer = new WebGLRenderer();
-    renderer.setSize(640, 1136);
+    renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 
     // scene
     scene = new Scene();
 
     // camera
-    camera = new PerspectiveCamera(45, 640 / 1136, 1, 10000);
+    camera = new PerspectiveCamera(45, width / height, 1, 10000);
     camera.position.set(0, 0, 1000);
 
     // light
@@ -52,8 +52,24 @@ const mainProgram = () => {
     renderer.render(scene!, camera!);
   };
 
-  setup();
+  const size = await getWindowSizeAsync();
+  setup(size.width, size.height);
   mainLoop();
 };
+
+async function getWindowSizeAsync(): Promise<{width: number, height: number}> {
+  return new Promise(resolve => {
+    const timer_id = window.setInterval(() => {
+      if (!!window.innerWidth && !!window.innerHeight) {
+        window.clearInterval(timer_id);
+
+        resolve({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+    }, 100);
+  });
+}
 
 window.addEventListener("DOMContentLoaded", mainProgram);
