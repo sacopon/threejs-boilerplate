@@ -9,6 +9,7 @@ import {
   MeshPhongMaterial,
 } from "three";
 
+
 async function mainProgram() {
   let renderer: WebGLRenderer;
   let scene: Scene;
@@ -16,10 +17,12 @@ async function mainProgram() {
   let mesh: Mesh;
 
   // setup
-  const setup = (width: number, height: number) => {
+  const setupThree = async () => {
+    const size = await getWindowSizeAsync();
+
     // renderer
     renderer = new WebGLRenderer();
-    renderer.setSize(width, height);
+    renderer.setSize(size.width, size.height);
     setDisableTouchEvent(renderer.domElement);
     document.body.appendChild(renderer.domElement);
 
@@ -33,7 +36,7 @@ async function mainProgram() {
     scene = new Scene();
 
     // camera
-    camera = new PerspectiveCamera(45, width / height, 1, 10000);
+    camera = new PerspectiveCamera(45, size.width / size.height, 1, 10000);
     camera.position.set(0, 0, 1000);
 
     // light
@@ -59,12 +62,11 @@ async function mainProgram() {
     renderer.render(scene!, camera!);
   };
 
-  disableEventForOuterCanvas();
-
-  const size = await getWindowSizeAsync();
-  setup(size.width, size.height);
+  setupDomElements();
+  setupThree();
   mainLoop();
 };
+
 
 async function getWindowSizeAsync(): Promise<{width: number, height: number}> {
   return new Promise(resolve => {
@@ -80,6 +82,7 @@ async function getWindowSizeAsync(): Promise<{width: number, height: number}> {
     }, 100);
   });
 }
+
 
 function setDisableTouchEvent(dom: HTMLElement) {
   const disableEventFunc = (e?: Event) => {
@@ -106,7 +109,8 @@ function setDisableTouchEvent(dom: HTMLElement) {
   dom.addEventListener("wheel", disableEventFunc);
 }
 
-function disableEventForOuterCanvas() {
+
+function disableOuterCanvasEvent() {
   const div = window.document.createElement("div");
   div.style.left = "0px";
   div.style.top = "0px";
@@ -116,6 +120,11 @@ function disableEventForOuterCanvas() {
   div.style.zIndex = "-1000";
   setDisableTouchEvent(div);
   window.document.body.appendChild(div);
+}
+
+
+function setupDomElements() {
+  disableOuterCanvasEvent();
 }
 
 window.addEventListener("DOMContentLoaded", mainProgram);
