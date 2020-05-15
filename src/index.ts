@@ -8,9 +8,11 @@ import {
   BoxGeometry,
   MeshPhongMaterial,
 } from "three";
-import { disableTouchEvent, disableOuterCanvasTouchEvent } from "disableTouchEvent";
+import {
+  disableTouchEvent,
+  disableOuterCanvasTouchEvent,
+} from "disableTouchEvent";
 import { getWindowSizeAsync } from "getWindowSizeAsync";
-
 
 async function mainProgram() {
   let renderer: WebGLRenderer;
@@ -19,7 +21,7 @@ async function mainProgram() {
   let mesh: Mesh;
 
   // setup
-  const setupThree = (size: {width: number, height: number}) => {
+  const setupThree = (size: { width: number; height: number }) => {
     // renderer
     renderer = new WebGLRenderer();
     renderer.setSize(size.width, size.height);
@@ -27,10 +29,18 @@ async function mainProgram() {
     document.body.appendChild(renderer.domElement);
 
     // touch event activate
-    renderer.domElement.addEventListener("touchstart", () => material.color .set("#00FF00"));
-    renderer.domElement.addEventListener("touchmove", () => material.color .set("#00FF00"));
-    renderer.domElement.addEventListener("touchend", () => material.color .set("#FF0000"));
-    renderer.domElement.addEventListener("touchcancel", () => material.color .set("#FF0000"));
+    renderer.domElement.addEventListener("touchstart", () =>
+      material.color.set("#00FF00")
+    );
+    renderer.domElement.addEventListener("touchmove", () =>
+      material.color.set("#00FF00")
+    );
+    renderer.domElement.addEventListener("touchend", () =>
+      material.color.set("#FF0000")
+    );
+    renderer.domElement.addEventListener("touchcancel", () =>
+      material.color.set("#FF0000")
+    );
 
     // scene
     scene = new Scene();
@@ -40,13 +50,13 @@ async function mainProgram() {
     camera.position.set(0, 0, 1000);
 
     // light
-    const light = new DirectionalLight(0xFFFFFF);
+    const light = new DirectionalLight(0xffffff);
     light.position.set(1, 1, 1);
     scene.add(light);
 
     // mesh
     const geometry = new BoxGeometry(250, 250, 250);
-    const material = new MeshPhongMaterial({color: 0xFF0000});
+    const material = new MeshPhongMaterial({ color: 0xff0000 });
     mesh = new Mesh(geometry, material);
     mesh.position.z = -5;
     scene.add(mesh);

@@ -35,4 +35,4 @@ function disableOuterCanvasTouchEvent() {
   window.document.body.appendChild(div);
 }
 
-export { disableTouchEvent, disableOuterCanvasTouchEvent }
+export { disableTouchEvent, disableOuterCanvasTouchEvent };
