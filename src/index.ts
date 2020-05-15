@@ -27,10 +27,10 @@ async function mainProgram() {
     document.body.appendChild(renderer.domElement);
 
     // touch event activate
-    renderer.domElement.addEventListener("touchstart", (e) => material.color .set("#00FF00"));
-    renderer.domElement.addEventListener("touchmove", (e) => material.color .set("#00FF00"));
-    renderer.domElement.addEventListener("touchend", (e) => material.color .set("#FF0000"));
-    renderer.domElement.addEventListener("touchcancel", (e) => material.color .set("#FF0000"));
+    renderer.domElement.addEventListener("touchstart", () => material.color .set("#00FF00"));
+    renderer.domElement.addEventListener("touchmove", () => material.color .set("#00FF00"));
+    renderer.domElement.addEventListener("touchend", () => material.color .set("#FF0000"));
+    renderer.domElement.addEventListener("touchcancel", () => material.color .set("#FF0000"));
 
     // scene
     scene = new Scene();
@@ -65,6 +65,6 @@ async function mainProgram() {
   disableOuterCanvasTouchEvent();
   setupThree(await getWindowSizeAsync());
   mainLoop();
-};
+}
 
 window.addEventListener("DOMContentLoaded", mainProgram);
