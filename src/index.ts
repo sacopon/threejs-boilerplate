@@ -8,6 +8,8 @@ import {
   BoxGeometry,
   MeshPhongMaterial,
 } from "three";
+import { disableTouchEvent, disableOuterCanvasTouchEvent } from "disableTouchEvent";
+import { getWindowSizeAsync } from "getWindowSizeAsync";
 
 
 async function mainProgram() {
@@ -17,13 +19,11 @@ async function mainProgram() {
   let mesh: Mesh;
 
   // setup
-  const setupThree = async () => {
-    const size = await getWindowSizeAsync();
-
+  const setupThree = (size: {width: number, height: number}) => {
     // renderer
     renderer = new WebGLRenderer();
     renderer.setSize(size.width, size.height);
-    setDisableTouchEvent(renderer.domElement);
+    disableTouchEvent(renderer.domElement);
     document.body.appendChild(renderer.domElement);
 
     // touch event activate
@@ -62,69 +62,9 @@ async function mainProgram() {
     renderer.render(scene!, camera!);
   };
 
-  setupDomElements();
-  await setupThree();
+  disableOuterCanvasTouchEvent();
+  setupThree(await getWindowSizeAsync());
   mainLoop();
 };
-
-
-async function getWindowSizeAsync(): Promise<{width: number, height: number}> {
-  return new Promise(resolve => {
-    const timer_id = window.setInterval(() => {
-      if (!!window.innerWidth && !!window.innerHeight) {
-        window.clearInterval(timer_id);
-
-        resolve({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      }
-    }, 100);
-  });
-}
-
-
-function setDisableTouchEvent(dom: HTMLElement) {
-  const disableEventFunc = (e?: Event) => {
-    if (!e) {
-      return false;
-    }
-
-    if (e.preventDefault) {
-      e.preventDefault();
-    }
-
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
-
-    return false;
-  };
-
-  dom.addEventListener("touchstart", disableEventFunc);
-  dom.addEventListener("touchmove", disableEventFunc);
-  dom.addEventListener("touchend", disableEventFunc);
-  dom.addEventListener("pointerdown", disableEventFunc);
-  dom.addEventListener("pointerup", disableEventFunc);
-  dom.addEventListener("wheel", disableEventFunc);
-}
-
-
-function disableOuterCanvasEvent() {
-  const div = window.document.createElement("div");
-  div.style.left = "0px";
-  div.style.top = "0px";
-  div.style.width = "100%";
-  div.style.height = "100%";
-  div.style.position = "fixed";
-  div.style.zIndex = "-1000";
-  setDisableTouchEvent(div);
-  window.document.body.appendChild(div);
-}
-
-
-function setupDomElements() {
-  disableOuterCanvasEvent();
-}
 
 window.addEventListener("DOMContentLoaded", mainProgram);
